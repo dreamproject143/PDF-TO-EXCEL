@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Excel | Made by Ram</title>
+    <title>OEE Calculator | Made by Ram</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
     <div class="container">
-        <h1>PDF to Excel <span class="author">(Made by Ram)</span></h1>
-        <p class="subtitle">Convert your PDF files to Excel easily</p>
+        <h1>PDF TO EXCEL <span class="author">(Made by Ram)</span></h1>
+        <p class="subtitle">Optimize Your Machine Performance</p>
         
         <form id="uploadForm" enctype="multipart/form-data">
             <label for="fileInput" class="custom-file-upload">
-                📂 Choose PDF
+                📂 Choose Files
                 <input type="file" name="files" id="fileInput" multiple hidden>
             </label>
             <span id="fileLabel">No files chosen</span>
-            <button type="button" onclick="uploadFile()">📤 Upload</button>
-            <button type="button" onclick="convertFile()">🔄 Convert</button>
+            <button type="button" onclick="uploadFile()">📤 Upload Files</button>
         </form>
         
         <p id="message"></p>
-        <button onclick="downloadFile()">📥 Download</button>
+        <button onclick="processAndDownload()">📊 Generate Report</button>
     </div>
 
-    <p class="thank-you">Thank you for using PDF to Excel by Ram!</p>
+    <!-- Small Thank You Message -->
+    <p class="thank-you">Thank you for giving chance, Mr. Bryan</p>
 
     <script>
         document.getElementById('fileInput').addEventListener('change', function() {
@@ -39,7 +39,7 @@
             const files = document.getElementById('fileInput').files;
             
             if (files.length === 0) {
-                alert('Please select a PDF first!');
+                alert('Please select files first');
                 return;
             }
 
@@ -52,22 +52,14 @@
                 });
         }
 
-        function convertFile() {
-            fetch('/convert', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('message').innerText = data.message;
-                });
-        }
-
-        function downloadFile() {
-            fetch('/download', { method: 'GET' })
+        function processAndDownload() {
+            fetch('/process', { method: 'POST' })
                 .then(response => response.blob())
                 .then(blob => {
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = 'Converted_File.xlsx';
+                    a.download = 'OEE_Summary.xlsx';
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
