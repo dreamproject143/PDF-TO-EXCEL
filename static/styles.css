@@ -1,5 +1,4 @@
 /* style.css */
-/* Realistic Industrial Background */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,12 +10,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Changed to min-height for better mobile support */
+    min-height: 100vh;
     position: relative;
-    -webkit-tap-highlight-color: transparent; /* Disable mobile tap highlight */
+    -webkit-tap-highlight-color: transparent; 
 }
 
-/* Dark Overlay for Readability (now combined with background property) */
 body::before {
     content: "";
     position: absolute;
@@ -28,7 +26,6 @@ body::before {
     z-index: 0;
 }
 
-/* Glass Effect on Main Container */
 .container {
     position: relative;
     z-index: 1;
@@ -37,36 +34,33 @@ body::before {
     padding: 25px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* Safari support */
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     text-align: center;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    margin: 20px 0; /* Added margin for mobile safety */
+    margin: 20px 0;
 }
 
-/* Title Styling */
 h1 {
-    font-size: clamp(24px, 3vw, 32px); /* Responsive font size */
+    font-size: clamp(24px, 3vw, 32px);
     margin-bottom: 5px;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
-.author {
-    font-size: 14px;
-    font-weight: normal;
-    color: rgba(255, 255, 255, 0.7);
-    display: block; /* Ensure proper spacing */
+.author { 
+    font-size: 14px; 
+    font-weight: normal; 
+    color: rgba(255, 255, 255, 0.7); 
+    display: block; 
 }
 
-.subtitle {
-    font-size: clamp(14px, 1.8vw, 18px); /* Responsive font size */
-    margin-bottom: 20px;
-    color: rgba(255, 255, 255, 0.9);
+.subtitle { 
+    font-size: clamp(14px, 1.8vw, 18px); 
+    margin-bottom: 20px; 
+    color: rgba(255, 255, 255, 0.9); 
 }
 
-/* Custom File Upload */
 .custom-file-upload {
     display: block;
     background: linear-gradient(135deg, #ff9800, #ff5722);
@@ -79,25 +73,23 @@ h1 {
     margin: 10px auto;
     transition: 0.3s;
     box-shadow: 0 3px 8px rgba(255, 87, 34, 0.6);
-    border: none; /* Added for consistency */
+    border: none; 
 }
 
 .custom-file-upload:hover {
     background: linear-gradient(135deg, #e65100, #bf360c);
-    transform: translateY(-1px); /* Added subtle hover effect */
+    transform: translateY(-1px);
 }
 
-/* File Selection Label */
 #fileLabel {
     display: block;
     margin-top: 10px;
     font-size: 15px;
     color: rgba(255, 255, 255, 0.8);
     font-style: italic;
-    min-height: 18px; /* Prevent layout shift */
+    min-height: 18px; 
 }
 
-/* Buttons */
 button {
     background: linear-gradient(135deg, #007BFF, #0056b3);
     color: white;
@@ -110,8 +102,8 @@ button {
     font-weight: bold;
     transition: 0.3s;
     box-shadow: 0 3px 8px rgba(0, 123, 255, 0.5);
-    width: 100%; /* Better mobile handling */
-    max-width: 300px; /* Prevent over-stretching */
+    width: 100%; 
+    max-width: 300px; 
 }
 
 button:hover {
@@ -119,7 +111,6 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* Message Display */
 #message {
     margin-top: 15px;
     font-size: 16px;
@@ -127,11 +118,10 @@ button:hover {
     padding: 8px;
     border-radius: 5px;
     background: rgba(255, 235, 59, 0.15);
-    min-height: 20px; /* Prevent layout shift */
-    transition: color 0.3s ease; /* Smooth color transitions */
+    min-height: 20px; 
+    transition: color 0.3s ease; 
 }
 
-/* Thank You Message */
 .thank-you {
     position: fixed;
     bottom: 5px;
@@ -140,10 +130,9 @@ button:hover {
     color: rgba(255, 255, 255, 0.85);
     text-align: right;
     font-style: italic;
-    padding: 5px; /* Added padding for touch targets */
+    padding: 5px; 
 }
 
-/* Mobile Optimization */
 @media (max-width: 480px) {
     .container {
         padding: 15px;
