@@ -4,6 +4,7 @@ import io
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_file
 import pdfplumber
+import numpy as np
 import pandas as pd
 from werkzeug.utils import secure_filename
 
