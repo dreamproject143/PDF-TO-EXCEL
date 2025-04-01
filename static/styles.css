@@ -1,107 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Excel Converter | Made by Ram</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>PDF to Excel Converter <span class="author">(Made by Ram)</span></h1>
-        <p class="subtitle">Extract Data from PDFs to Excel</p>
-        
-        <form id="uploadForm" enctype="multipart/form-data">
-            <label for="fileInput" class="custom-file-upload">
-                📂 Choose PDF Files
-                <input type="file" name="files" id="fileInput" multiple accept=".pdf" hidden>
-            </label>
-            <span id="fileLabel">No files chosen</span>
-            <button type="button" onclick="uploadFile()">📤 Upload Files</button>
-        </form>
-        
-        <p id="message"></p>
-        <button onclick="processAndDownload()">📊 Generate Excel Report</button>
-    </div>
+/* style.css */
+/* Realistic Industrial Background */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url("https://images.unsplash.com/photo-1581092335264-4b8b5d4f7a19") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
 
-    <!-- Small Thank You Message -->
-    <p class="thank-you">Thank you for giving chance, Mr. Bryan</p>
+/* Dark Overlay for Readability */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
 
-    <script>
-        document.getElementById('fileInput').addEventListener('change', function() {
-            let fileLabel = document.getElementById('fileLabel');
-            fileLabel.innerText = this.files.length > 0 ? 
-                `${this.files.length} PDF file(s) selected` : "No files chosen";
-        });
+/* Glass Effect on Main Container */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 800px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+}
 
-        function uploadFile() {
-            const formData = new FormData();
-            const files = document.getElementById('fileInput').files;
-            
-            if (files.length === 0) {
-                document.getElementById('message').innerText = 'Please select PDF files first';
-                document.getElementById('message').style.color = '#ff5252';
-                return;
-            }
+/* Title Styling */
+h1 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
 
-            // Validate file types
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].type !== 'application/pdf') {
-                    document.getElementById('message').innerText = 'Please upload only PDF files';
-                    document.getElementById('message').style.color = '#ff5252';
-                    return;
-                }
-                formData.append('files', files[i]);
-            }
+.author {
+    font-size: 14px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+}
 
-            document.getElementById('message').innerText = 'Uploading and processing files...';
-            document.getElementById('message').style.color = '#4CAF50';
+.subtitle {
+    font-size: clamp(14px, 1.8vw, 18px);
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
 
-            fetch('/upload', { 
-                method: 'POST', 
-                body: formData 
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('message').innerText = data.message;
-                document.getElementById('message').style.color = data.success ? '#4CAF50' : '#ff5252';
-            })
-            .catch(error => {
-                document.getElementById('message').innerText = 'Error uploading files';
-                document.getElementById('message').style.color = '#ff5252';
-                console.error('Error:', error);
-            });
-        }
+/* Custom File Upload */
+.custom-file-upload {
+    display: block;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px auto;
+    transition: 0.3s;
+    box-shadow: 0 3px 8px rgba(255, 87, 34, 0.6);
+    border: none;
+}
 
-        function processAndDownload() {
-            document.getElementById('message').innerText = 'Generating Excel file...';
-            document.getElementById('message').style.color = '#4CAF50';
-            
-            fetch('/process', { method: 'POST' })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error generating Excel file');
-                    }
-                    return response.blob();
-                })
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'PDF_Extracted_Data.xlsx';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.getElementById('message').innerText = 'Excel file downloaded successfully!';
-                    document.getElementById('message').style.color = '#4CAF50';
-                })
-                .catch(error => {
-                    document.getElementById('message').innerText = error.message;
-                    document.getElementById('message').style.color = '#ff5252';
-                    console.error('Error:', error);
-                });
-        }
-    </script>
-</body>
-</html>
+.custom-file-upload:hover {
+    background: linear-gradient(135deg, #e65100, #bf360c);
+    transform: translateY(-1px);
+}
+
+/* File Selection Label */
+#fileLabel {
+    display: block;
+    margin-top: 10px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    min-height: 18px;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(135deg, #007BFF, #0056b3);
+    color: white;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 17px;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.5);
+    width: 100%;
+    max-width: 300px;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0056b3, #003f8a);
+    transform: translateY(-1px);
+}
+
+/* Message Display */
+#message {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
+    background: rgba(255, 235, 59, 0.15);
+    min-height: 20px;
+    transition: color 0.3s ease;
+}
+
+/* Thank You Message */
+.thank-you {
+    position: fixed;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: right;
+    font-style: italic;
+    padding: 5px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    button {
+        font-size: 15px;
+        padding: 12px 18px;
+    }
+    
+    .custom-file-upload {
+        font-size: 14px;
+    }
+}
